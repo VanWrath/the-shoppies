@@ -3,7 +3,7 @@ import MovieItem from './movieItem';
 import React, { Component } from 'react'
 
 /* Props
-*  movies : Array
+*  movies : array
 *  onClick : function
 *  check : function
 *  nominated : boolean

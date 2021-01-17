@@ -1,16 +1,8 @@
 import React, {Component} from 'react';
 import './App.css';
-import HttpService from "./services/http-service";
 import MovieList from './components/movieList';
 
-const http = new HttpService();
-var testList = [ 
-  {Title: "Batman",Year: 1989, imdbID : 'tt0096895'},
-  {Title: "The Avengers", Year: 2012, imdbID : 'tt0848228'}
-]
-
 export default class App extends Component {
-
   constructor(props){
     super(props);
     this.state = {
@@ -26,6 +18,7 @@ export default class App extends Component {
   }
 
   componentDidMount() {
+    //load user's nominees list from local storage.
     const json = localStorage.getItem("nominees");
     const savedNominees = JSON.parse(json);
     if (savedNominees) {
@@ -34,10 +27,12 @@ export default class App extends Component {
   }
 
   componentDidUpdate() {
+    //save nominees list to local storage
     const json = JSON.stringify(this.state.nominees);
     localStorage.setItem("nominees", json);
   }
 
+  //makes a request to the omdbapi to search to movies
   searchMovies = async(text) => {
     var movies;
     const res = await fetch("http://www.omdbapi.com/?s=" + text + "&type=movie&apikey=cda9abc8")
@@ -45,10 +40,10 @@ export default class App extends Component {
       this.setState({movies: data.Search});
     }
       );
-     //console.log('movies: ' + JSON.stringify(this.movies));
     return res;
   };
 
+  //handles search box change
   onTextChange = (event) => {
     var text = event.target.value;
     this.setState({searchText: text});
@@ -57,18 +52,17 @@ export default class App extends Component {
    }
  }
 
+ //nominates the movie the user picks
   nominateMovie = (movie) => {
     var nomineesList = this.state.nominees;
       if(this.state.nominees.length < 5){
         nomineesList.push(movie);
-        //console.log(this.state.nominees.length)
         this.setState({nominees: nomineesList});
         
       }
-      
-      //console.log(JSON.stringify(this.state.nominees));
   }
 
+  //removes a movie from the nominee list
   removeNomination = (movie) => {
     var nomineesList = this.state.nominees;
     for(let i = 0; i < this.state.nominees.length; i++){
@@ -79,6 +73,7 @@ export default class App extends Component {
     }
   }
 
+  //checks if a movie is in the nominated list
   checkNominated = (movie) => {
     for (let i = 0; i < this.state.nominees.length; i++){
       if(movie.imdbID == this.state.nominees[i].imdbID){
@@ -91,12 +86,13 @@ export default class App extends Component {
   render() {
     return (
       <div className="container text-light">
+        {/* Notification*/}
         {this.state.nominees.length == 5 &&
         <div className="alert alert-primary sticky-top" role="alert">
           <strong>You are done picking your 5 movie nominees.</strong>
         </div>}
         
-        {/* title */}
+        {/* Page Title */}
         <h1 className='my-5'>The Shoppies</h1>
   
         {/* Search bar */}
@@ -107,27 +103,24 @@ export default class App extends Component {
               <input type="text" className="form-control" name="searchbox" id="search" aria-describedby="helpId" placeholder="Search" onChange={this.onTextChange}/>
             </form>
           </div>
-          
         </div>
-  
+
         <div className="row">
+
           {/* Search Results */}
           <div className="col bg-dark m-3 p-4">
             <h4 className='mb-4'>Results for "{this.state.searchText}"</h4>
            {typeof this.state.movies !== 'undefined' && this.state.movies.length > 0 &&
-              <MovieList movies={this.state.movies} onClick={this.nominateMovie} nominees={this.state.nominees} check={this.checkNominated} nominated={false}/>
+              <MovieList movies={this.state.movies} onClick={this.nominateMovie} check={this.checkNominated} nominated={false}/>
            }
-           
-  
           </div>
   
-          {/* nominations list */}
-        <div className="col bg-dark m-3 p-4">
+          {/* Nominations list */}
+          <div className="col bg-dark m-3 p-4">
           <h4 className='mb-4'>Nominations</h4>
           {this.state.nominees.length > 0 &&
               <MovieList movies={this.state.nominees} onClick={this.removeNomination} nominated={true}/>
            }
-  
         </div>
         </div>
       </div>
