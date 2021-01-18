@@ -18,8 +18,6 @@ export default class movieItem extends Component {
 
     render() {
         var movie = this.props.movie;
-        //console.log(this.props.check && !this.props.nominated)
-        console.log(this.state.beingRemoved);
         return (
             <li className={'my-3 row text-center ' + this.state.animationCss }>
                 <div className='col-5'>
