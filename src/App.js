@@ -35,7 +35,7 @@ export default class App extends Component {
   //makes a request to the omdbapi to search to movies
   searchMovies = async(text) => {
     var movies;
-    const res = await fetch("http://www.omdbapi.com/?s=" + text + "&type=movie&apikey=cda9abc8")
+    const res = await fetch("https://www.omdbapi.com/?s=" + text + "&type=movie&apikey=cda9abc8")
     .then(res => res.json()).then(data =>  {
       this.setState({movies: data.Search});
     }
