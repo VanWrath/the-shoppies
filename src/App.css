@@ -70,3 +70,9 @@ li.new-item {
 p.movieTitle {
 	font-weight: bold;
 }
+
+.external-link {
+	text-decoration: none;
+	font-size: 40px;
+	color: white;
+}

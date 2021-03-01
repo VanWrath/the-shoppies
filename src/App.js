@@ -34,8 +34,7 @@ export default class App extends Component {
 
   //makes a request to the omdbapi to search to movies
   searchMovies = async(text) => {
-    var movies;
-    const res = await fetch("http://www.omdbapi.com/?s=" + text + "&type=movie&apikey=cda9abc8")
+    const res = await fetch("https://www.omdbapi.com/?s=" + text + "&type=movie&apikey=cda9abc8")
     .then(res => res.json()).then(data =>  {
       this.setState({movies: data.Search});
     }
@@ -66,7 +65,7 @@ export default class App extends Component {
   removeNomination = (movie) => {
     var nomineesList = this.state.nominees;
     for(let i = 0; i < this.state.nominees.length; i++){
-      if(movie.imdbID == this.state.nominees[i].imdbID){
+      if(movie.imdbID === this.state.nominees[i].imdbID){
         nomineesList.splice(i,1);
         this.setState({nominees: nomineesList});
       }
@@ -76,7 +75,7 @@ export default class App extends Component {
   //checks if a movie is in the nominated list
   checkNominated = (movie) => {
     for (let i = 0; i < this.state.nominees.length; i++){
-      if(movie.imdbID == this.state.nominees[i].imdbID){
+      if(movie.imdbID === this.state.nominees[i].imdbID){
         return true;
       }
     }
@@ -85,15 +84,20 @@ export default class App extends Component {
 
   render() {
     return (
-      <div className="container text-light">
+        <div className="container text-light ">
+          <div className="d-block text-right">
+            <a href='https://github.com/VanWrath/the-shoppies' className="external-link"><i className="fab fa-github-square"/></a>
+          </div>
+        
         {/* Notification*/}
-        {this.state.nominees.length == 5 &&
+        {this.state.nominees.length === 5 &&
         <div className="alert alert-primary sticky-top" role="alert">
           <strong>You are done picking your 5 movie nominees.</strong>
         </div>}
         
         {/* Page Title */}
         <h1 className='my-5'>The Shoppies</h1>
+        <p>Search and nominate movies for the Shoppies awards.</p>
   
         {/* Search bar */}
         <div className="row bg-dark p-4 m-0">
@@ -121,10 +125,9 @@ export default class App extends Component {
           {this.state.nominees.length > 0 &&
               <MovieList movies={this.state.nominees} onClick={this.removeNomination} nominated={true}/>
            }
-        </div>
+          </div>
         </div>
       </div>
-  
   );
 }
 }
