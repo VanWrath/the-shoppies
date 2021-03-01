@@ -85,19 +85,20 @@ export default class App extends Component {
   render() {
     return (
         <div className="container text-light ">
-          <div className="d-block text-right">
-            <a href='https://github.com/VanWrath/the-shoppies' className="external-link"><i className="fab fa-github-square"/></a>
-          </div>
-        
-        {/* Notification*/}
+
+           {/* Notification*/}
         {this.state.nominees.length === 5 &&
         <div className="alert alert-primary sticky-top" role="alert">
           <strong>You are done picking your 5 movie nominees.</strong>
         </div>}
+
+          <div className="d-block text-right">
+            <a href='https://github.com/VanWrath/the-shoppies' className="external-link"><i className="fab fa-github-square"/></a>
+          </div>
         
         {/* Page Title */}
         <h1 className='my-5'>The Shoppies</h1>
-        <p>Search and nominate movies for the Shoppies awards.</p>
+        <p>Search and nominate 5 movies for the Shoppies awards.</p>
   
         {/* Search bar */}
         <div className="row bg-dark p-4 m-0">
